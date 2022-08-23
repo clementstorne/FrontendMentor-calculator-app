@@ -185,11 +185,11 @@ button {
 .attribution a {
   font-size: 11px;
   font-weight: 600;
-  color: var(--key-background);
+  color: var(--key-first-alt-background);
 }
 
 .attribution a:visited {
-  color: var(--key-shadow);
+  color: var(--key-second-alt-background);
 }
 
 @media screen and (min-width: 768px) {
