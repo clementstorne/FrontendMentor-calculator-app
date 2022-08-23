@@ -73,7 +73,7 @@ body {
   align-items: center;
 }
 
-#theme-selector {
+#theme-cursor-background {
   background-color: var(--keypad);
   border-radius: 13px;
   grid-area: 2/2/2/3;
@@ -84,12 +84,16 @@ body {
   column-gap: 5px;
 }
 
-#theme-selected {
+#theme-cursor {
   width: 18px;
   height: 18px;
   border-radius: 100%;
   background-color: var(--key-second-alt-background);
   grid-area: 1/1/1/2;
+}
+
+.theme-selector {
+  cursor: pointer;
 }
 
 #screen {
