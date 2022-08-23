@@ -42,36 +42,73 @@ function clickOnDigitKey(key) {
 }
 
 button0.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
   clickOnDigitKey(0);
 };
 button1.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
   clickOnDigitKey(1);
 };
 button2.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
   clickOnDigitKey(2);
 };
 button3.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
   clickOnDigitKey(3);
 };
 button4.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
   clickOnDigitKey(4);
 };
 button5.onclick = () => {
-  clickOnDigitKey(5);
-};
-button5.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
   clickOnDigitKey(5);
 };
 button6.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
   clickOnDigitKey(6);
 };
 button7.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
   clickOnDigitKey(7);
 };
 button8.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
   clickOnDigitKey(8);
 };
 button9.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
   clickOnDigitKey(9);
 };
 
@@ -80,6 +117,7 @@ let a = "";
 let b = "";
 let operator = "";
 let result = "";
+let isResultPrinted = false;
 
 function compute() {
   if (digitsOnScreen.textContent === "") {
@@ -105,6 +143,7 @@ function compute() {
 
 function printResult() {
   digitsOnScreen.textContent = result;
+  isResultPrinted = true;
 }
 
 operationButtons.forEach((item) => {
