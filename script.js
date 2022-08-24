@@ -184,6 +184,7 @@ let theme1 = document.getElementById("theme1");
 let theme2 = document.getElementById("theme2");
 let theme3 = document.getElementById("theme3");
 let themeCursor = document.getElementById("theme-cursor");
+let themeCursorBackground = document.getElementById("theme-cursor-background");
 
 theme1.onclick = () => {
   themeCursor.style.gridArea = "1/1/1/2";
@@ -200,8 +201,9 @@ theme3.onclick = () => {
   setTheme(3);
 };
 
-themeCursor.onclick = () => {
-  switch (theme) {
+themeCursorBackground.onclick = () => {
+  let themeNumber = parseInt(theme);
+  switch (themeNumber) {
     case 1:
       themeCursor.style.gridArea = "1/2/1/3";
       setTheme(2);
@@ -224,7 +226,21 @@ function getThemeFromLS() {
     setTheme(1);
   } else {
     theme = localStorage.getItem("theme");
-    setTheme(theme);
+    let themeNumber = parseInt(theme);
+    switch (themeNumber) {
+      case 2:
+        themeCursor.style.gridArea = "1/2/1/3";
+        setTheme(2);
+        break;
+      case 3:
+        themeCursor.style.gridArea = "1/3/1/4";
+        setTheme(3);
+        break;
+      case 1:
+        themeCursor.style.gridArea = "1/1/1/2";
+        setTheme(1);
+        break;
+    }
   }
 }
 
