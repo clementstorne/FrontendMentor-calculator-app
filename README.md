@@ -40,10 +40,7 @@ This is a solution to the [Calculator app challenge on Frontend Mentor](https://
 I learned how to modify CSS variables in a JavaScript script.
 
 ```js
-document.documentElement.style.setProperty(
-  "--background",
-  "hsl(222, 26%, 31%)"
-);
+document.documentElement.style.setProperty("--background", "hsl(222, 26%, 31%)");
 ```
 
 ## Author

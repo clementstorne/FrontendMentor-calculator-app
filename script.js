@@ -150,7 +150,8 @@ function compute() {
         result = a - b;
         break;
       case "*":
-        result = a * b;
+        result =
+          (a * Math.pow(10, 10) * (b * Math.pow(10, 10))) / Math.pow(10, 20);
         break;
       case "/":
         result = Math.round((a / b) * Math.pow(10, 7)) / Math.pow(10, 7);
