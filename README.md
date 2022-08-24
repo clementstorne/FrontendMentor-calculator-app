@@ -1,4 +1,4 @@
-# Frontend Mentor - QR code component solution
+# Frontend Mentor - Calculator app solution
 
 This is a solution to the [Calculator app challenge on Frontend Mentor](https://www.frontendmentor.io/challenges/calculator-app-9lteq5N29). Frontend Mentor challenges help you improve your coding skills by building realistic projects.
 
@@ -9,6 +9,7 @@ This is a solution to the [Calculator app challenge on Frontend Mentor](https://
   - [Links](#links)
 - [My process](#my-process)
   - [Built with](#built-with)
+  - [What I learned](#what-i-learned)
 - [Author](#author)
 
 ## Overview
@@ -33,6 +34,17 @@ This is a solution to the [Calculator app challenge on Frontend Mentor](https://
 - Flexbox
 - Flexbox
 - JavaScript
+
+### What I learned
+
+I learned how to modify CSS variables in a JavaScript script.
+
+```js
+document.documentElement.style.setProperty(
+  "--background",
+  "hsl(222, 26%, 31%)"
+);
+```
 
 ## Author
 
