@@ -36,9 +36,14 @@ let button6 = document.getElementById("btn6");
 let button7 = document.getElementById("btn7");
 let button8 = document.getElementById("btn8");
 let button9 = document.getElementById("btn9");
+let buttonDecimal = document.getElementById("btn-comma");
 
 function clickOnDigitKey(key) {
   digitsOnScreen.textContent += `${key}`;
+}
+
+function isDecimal(number) {
+  return number.includes(".");
 }
 
 button0.onclick = () => {
@@ -111,6 +116,19 @@ button9.onclick = () => {
   }
   clickOnDigitKey(9);
 };
+buttonDecimal.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
+  if (!isDecimal(digitsOnScreen.textContent)) {
+    if (digitsOnScreen.textContent == "") {
+      clickOnDigitKey("0.");
+    } else {
+      clickOnDigitKey(".");
+    }
+  }
+};
 
 // COMPUTE
 let a = "";
@@ -123,7 +141,7 @@ function compute() {
   if (digitsOnScreen.textContent === "") {
     digitsOnScreen.textContent = "ERROR";
   } else {
-    b = parseInt(digitsOnScreen.textContent);
+    b = parseFloat(digitsOnScreen.textContent);
     switch (operator) {
       case "+":
         result = a + b;
@@ -135,7 +153,7 @@ function compute() {
         result = a * b;
         break;
       case "/":
-        result = Math.round((a / b) * Math.pow(10, 11)) / Math.pow(10, 11);
+        result = Math.round((a / b) * Math.pow(10, 7)) / Math.pow(10, 7);
         break;
     }
   }
@@ -148,7 +166,7 @@ function printResult() {
 
 operationButtons.forEach((item) => {
   item.addEventListener("click", () => {
-    a = parseInt(digitsOnScreen.textContent);
+    a = parseFloat(digitsOnScreen.textContent);
     clearScreen();
   });
 });
