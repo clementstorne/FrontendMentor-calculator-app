@@ -220,11 +220,14 @@ theme3.onclick = () => {
 };
 
 themeCursorBackground.onclick = () => {
-  let themeNumber = parseInt(theme);
+  console.log("clic");
+  let themeNumber = parseInt(localStorage.getItem("theme"));
+  console.log(themeNumber);
   switch (themeNumber) {
     case 1:
       themeCursor.style.gridArea = "1/2/1/3";
       setTheme(2);
+      themeNumber = 2;
       break;
     case 2:
       themeCursor.style.gridArea = "1/3/1/4";
@@ -233,6 +236,7 @@ themeCursorBackground.onclick = () => {
     case 3:
       themeCursor.style.gridArea = "1/1/1/2";
       setTheme(1);
+      themeNumber = 1;
       break;
   }
 };
