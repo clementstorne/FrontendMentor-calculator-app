@@ -178,6 +178,21 @@ function turnToSameDenominator(number1, number2) {
   }
 }
 
+function truncateToFitScreen(number) {
+  let [numerator, denominator] = turnIntoDecimalFraction(number);
+  const numeratorString = numerator.toString();
+  if (numeratorString.length > 14) {
+    let array = numeratorString.split("");
+    if (array[14] >= 5) {
+      array[13] = parseInt(array[13]) + 1;
+    }
+    numerator = parseInt(array.slice(0, 14).join(""));
+    return numerator / Math.pow(10, denominator);
+  } else {
+    return numerator / Math.pow(10, denominator);
+  }
+}
+
 // COMPUTE
 let a = "";
 let b = "";
@@ -242,7 +257,7 @@ function compute() {
 }
 
 function printResult() {
-  digitsOnScreen.textContent = result;
+  digitsOnScreen.textContent = truncateToFitScreen(result);
   isResultPrinted = true;
 }
 
