@@ -9,13 +9,18 @@ let substraction = document.getElementById("btn-minus");
 let multiplication = document.getElementById("btn-multiply");
 let division = document.getElementById("btn-divide");
 
+// General functions
 function clearScreen() {
   let digitsOnScreen = document.getElementById("result");
   digitsOnScreen.textContent = "";
 }
 
+// Button functions
+// delButton.onclick = () => {
+//   clearScreen();
+// };
 delButton.onclick = () => {
-  clearScreen();
+  turnIntoDecimalFraction(digitsOnScreen.textContent);
 };
 
 resetButton.onclick = () => {
@@ -23,6 +28,15 @@ resetButton.onclick = () => {
   b = "";
   operator = "";
   clearScreen();
+};
+
+resultButton.onclick = () => {
+  compute();
+  printResult();
+  a = result;
+  b = "";
+  operator = "";
+  result = "";
 };
 
 // DIGITS
@@ -40,10 +54,6 @@ let buttonDecimal = document.getElementById("btn-comma");
 
 function clickOnDigitKey(key) {
   digitsOnScreen.textContent += `${key}`;
-}
-
-function isDecimal(number) {
-  return number.includes(".");
 }
 
 button0.onclick = () => {
@@ -130,6 +140,44 @@ buttonDecimal.onclick = () => {
   }
 };
 
+// Number functions
+function isDecimal(number) {
+  const stringNumber = number.toString();
+  return stringNumber.includes(".");
+}
+
+function turnIntoDecimalFraction(number) {
+  let stringNumber = number.toString();
+  if (isDecimal(number)) {
+    let split = stringNumber.split(".");
+    let numerator = parseInt(split[0] + split[1]);
+    let denominator = split[1].length;
+    return [numerator, denominator];
+  } else {
+    let numerator = number;
+    let denominator = 0;
+    return [numerator, denominator];
+  }
+}
+
+function haveSameDenominator(number1, number2) {
+  const [num1, den1] = turnIntoDecimalFraction(number1);
+  const [num2, den2] = turnIntoDecimalFraction(number2);
+  return den1 === den2;
+}
+
+function turnToSameDenominator(number1, number2) {
+  let [num1, den1] = turnIntoDecimalFraction(number1);
+  let [num2, den2] = turnIntoDecimalFraction(number2);
+  if (den1 < den2) {
+    num1 *= Math.pow(10, den2 - den1);
+    return [num1, den1, num2, den2];
+  } else {
+    num2 *= Math.pow(10, den1 - den2);
+    return [num1, den1, num2, den2];
+  }
+}
+
 // COMPUTE
 let a = "";
 let b = "";
@@ -144,17 +192,50 @@ function compute() {
     b = parseFloat(digitsOnScreen.textContent);
     switch (operator) {
       case "+":
-        result = a + b;
+        if (isDecimal(a) || isDecimal(b)) {
+          if (haveSameDenominator(a, b)) {
+            let [num1, den1] = turnIntoDecimalFraction(a);
+            let [num2, den2] = turnIntoDecimalFraction(b);
+            result = (num1 + num2) / Math.pow(10, den1);
+          } else {
+            let [num1, den1, num2, den2] = turnToSameDenominator(a, b);
+            result = (num1 + num2) / Math.pow(10, den1);
+          }
+        } else {
+          result = a + b;
+        }
         break;
       case "-":
-        result = a - b;
+        if (isDecimal(a) || isDecimal(b)) {
+          if (haveSameDenominator(a, b)) {
+            let [num1, den1] = turnIntoDecimalFraction(a);
+            let [num2, den2] = turnIntoDecimalFraction(b);
+            result = (num1 - num2) / Math.pow(10, den1);
+          } else {
+            let [num1, den1, num2, den2] = turnToSameDenominator(a, b);
+            result = (num1 - num2) / Math.pow(10, den1);
+          }
+        } else {
+          result = a - b;
+        }
         break;
       case "*":
-        result =
-          (a * Math.pow(10, 10) * (b * Math.pow(10, 10))) / Math.pow(10, 20);
+        if (isDecimal(a) || isDecimal(b)) {
+          let [num1, den1] = turnIntoDecimalFraction(a);
+          let [num2, den2] = turnIntoDecimalFraction(b);
+          result = (num1 * num2) / Math.pow(10, den1 + den2);
+        } else {
+          result = a * b;
+        }
         break;
       case "/":
-        result = Math.round((a / b) * Math.pow(10, 7)) / Math.pow(10, 7);
+        if (isDecimal(a) || isDecimal(b)) {
+          let [num1, den1] = turnIntoDecimalFraction(a);
+          let [num2, den2] = turnIntoDecimalFraction(b);
+          result = (num1 / num2) * Math.pow(10, den2 - den1);
+        } else {
+          result = a / b;
+        }
         break;
     }
   }
@@ -186,15 +267,6 @@ multiplication.onclick = () => {
 
 division.onclick = () => {
   operator = "/";
-};
-
-resultButton.onclick = () => {
-  compute();
-  printResult();
-  a = result;
-  b = "";
-  operator = "";
-  result = "";
 };
 
 // THEME SWITCH

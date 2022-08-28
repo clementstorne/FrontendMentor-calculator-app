@@ -16,7 +16,9 @@
   --text-buttons-second-alt: hsl(0, 0%, 100%);
 }
 
-* {
+*,
+::before,
+::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
