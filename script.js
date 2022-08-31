@@ -9,282 +9,7 @@ let substraction = document.getElementById("btn-minus");
 let multiplication = document.getElementById("btn-multiply");
 let division = document.getElementById("btn-divide");
 
-// General functions
-function clearScreen() {
-  let digitsOnScreen = document.getElementById("result");
-  digitsOnScreen.textContent = "";
-}
-
-// Button functions
-// delButton.onclick = () => {
-//   clearScreen();
-// };
-delButton.onclick = () => {
-  turnIntoDecimalFraction(digitsOnScreen.textContent);
-};
-
-resetButton.onclick = () => {
-  a = "";
-  b = "";
-  operator = "";
-  clearScreen();
-};
-
-resultButton.onclick = () => {
-  compute();
-  printResult();
-  a = result;
-  b = "";
-  operator = "";
-  result = "";
-};
-
-// DIGITS
-let button0 = document.getElementById("btn0");
-let button1 = document.getElementById("btn1");
-let button2 = document.getElementById("btn2");
-let button3 = document.getElementById("btn3");
-let button4 = document.getElementById("btn4");
-let button5 = document.getElementById("btn5");
-let button6 = document.getElementById("btn6");
-let button7 = document.getElementById("btn7");
-let button8 = document.getElementById("btn8");
-let button9 = document.getElementById("btn9");
-let buttonDecimal = document.getElementById("btn-comma");
-
-function clickOnDigitKey(key) {
-  digitsOnScreen.textContent += `${key}`;
-}
-
-button0.onclick = () => {
-  if (isResultPrinted) {
-    clearScreen();
-    isResultPrinted = false;
-  }
-  clickOnDigitKey(0);
-};
-button1.onclick = () => {
-  if (isResultPrinted) {
-    clearScreen();
-    isResultPrinted = false;
-  }
-  clickOnDigitKey(1);
-};
-button2.onclick = () => {
-  if (isResultPrinted) {
-    clearScreen();
-    isResultPrinted = false;
-  }
-  clickOnDigitKey(2);
-};
-button3.onclick = () => {
-  if (isResultPrinted) {
-    clearScreen();
-    isResultPrinted = false;
-  }
-  clickOnDigitKey(3);
-};
-button4.onclick = () => {
-  if (isResultPrinted) {
-    clearScreen();
-    isResultPrinted = false;
-  }
-  clickOnDigitKey(4);
-};
-button5.onclick = () => {
-  if (isResultPrinted) {
-    clearScreen();
-    isResultPrinted = false;
-  }
-  clickOnDigitKey(5);
-};
-button6.onclick = () => {
-  if (isResultPrinted) {
-    clearScreen();
-    isResultPrinted = false;
-  }
-  clickOnDigitKey(6);
-};
-button7.onclick = () => {
-  if (isResultPrinted) {
-    clearScreen();
-    isResultPrinted = false;
-  }
-  clickOnDigitKey(7);
-};
-button8.onclick = () => {
-  if (isResultPrinted) {
-    clearScreen();
-    isResultPrinted = false;
-  }
-  clickOnDigitKey(8);
-};
-button9.onclick = () => {
-  if (isResultPrinted) {
-    clearScreen();
-    isResultPrinted = false;
-  }
-  clickOnDigitKey(9);
-};
-buttonDecimal.onclick = () => {
-  if (isResultPrinted) {
-    clearScreen();
-    isResultPrinted = false;
-  }
-  if (!isDecimal(digitsOnScreen.textContent)) {
-    if (digitsOnScreen.textContent == "") {
-      clickOnDigitKey("0.");
-    } else {
-      clickOnDigitKey(".");
-    }
-  }
-};
-
-// Number functions
-function isDecimal(number) {
-  const stringNumber = number.toString();
-  return stringNumber.includes(".");
-}
-
-function turnIntoDecimalFraction(number) {
-  let stringNumber = number.toString();
-  if (isDecimal(number)) {
-    let split = stringNumber.split(".");
-    let numerator = parseInt(split[0] + split[1]);
-    let denominator = split[1].length;
-    return [numerator, denominator];
-  } else {
-    let numerator = number;
-    let denominator = 0;
-    return [numerator, denominator];
-  }
-}
-
-function haveSameDenominator(number1, number2) {
-  const [num1, den1] = turnIntoDecimalFraction(number1);
-  const [num2, den2] = turnIntoDecimalFraction(number2);
-  return den1 === den2;
-}
-
-function turnToSameDenominator(number1, number2) {
-  let [num1, den1] = turnIntoDecimalFraction(number1);
-  let [num2, den2] = turnIntoDecimalFraction(number2);
-  if (den1 < den2) {
-    num1 *= Math.pow(10, den2 - den1);
-    return [num1, den1, num2, den2];
-  } else {
-    num2 *= Math.pow(10, den1 - den2);
-    return [num1, den1, num2, den2];
-  }
-}
-
-function truncateToFitScreen(number) {
-  let [numerator, denominator] = turnIntoDecimalFraction(number);
-  const numeratorString = numerator.toString();
-  if (numeratorString.length > 14) {
-    let array = numeratorString.split("");
-    if (array[14] >= 5) {
-      array[13] = parseInt(array[13]) + 1;
-    }
-    numerator = parseInt(array.slice(0, 14).join(""));
-    return numerator / Math.pow(10, 14);
-  } else {
-    return numerator / Math.pow(10, denominator);
-  }
-}
-
-// COMPUTE
-let a = "";
-let b = "";
-let operator = "";
-let result = "";
-let isResultPrinted = false;
-
-function compute() {
-  if (digitsOnScreen.textContent === "") {
-    digitsOnScreen.textContent = "ERROR";
-  } else {
-    b = parseFloat(digitsOnScreen.textContent);
-    switch (operator) {
-      case "+":
-        if (isDecimal(a) || isDecimal(b)) {
-          if (haveSameDenominator(a, b)) {
-            let [num1, den1] = turnIntoDecimalFraction(a);
-            let [num2, den2] = turnIntoDecimalFraction(b);
-            result = (num1 + num2) / Math.pow(10, den1);
-          } else {
-            let [num1, den1, num2, den2] = turnToSameDenominator(a, b);
-            result = (num1 + num2) / Math.pow(10, den1);
-          }
-        } else {
-          result = a + b;
-        }
-        break;
-      case "-":
-        if (isDecimal(a) || isDecimal(b)) {
-          if (haveSameDenominator(a, b)) {
-            let [num1, den1] = turnIntoDecimalFraction(a);
-            let [num2, den2] = turnIntoDecimalFraction(b);
-            result = (num1 - num2) / Math.pow(10, den1);
-          } else {
-            let [num1, den1, num2, den2] = turnToSameDenominator(a, b);
-            result = (num1 - num2) / Math.pow(10, den1);
-          }
-        } else {
-          result = a - b;
-        }
-        break;
-      case "*":
-        if (isDecimal(a) || isDecimal(b)) {
-          let [num1, den1] = turnIntoDecimalFraction(a);
-          let [num2, den2] = turnIntoDecimalFraction(b);
-          result = (num1 * num2) / Math.pow(10, den1 + den2);
-        } else {
-          result = a * b;
-        }
-        break;
-      case "/":
-        if (isDecimal(a) || isDecimal(b)) {
-          let [num1, den1] = turnIntoDecimalFraction(a);
-          let [num2, den2] = turnIntoDecimalFraction(b);
-          result = (num1 / num2) * Math.pow(10, den2 - den1);
-        } else {
-          result = a / b;
-        }
-        break;
-    }
-  }
-}
-
-function printResult() {
-  digitsOnScreen.textContent = truncateToFitScreen(result);
-  isResultPrinted = true;
-}
-
-operationButtons.forEach((item) => {
-  item.addEventListener("click", () => {
-    a = parseFloat(digitsOnScreen.textContent);
-    clearScreen();
-  });
-});
-
-addition.onclick = () => {
-  operator = "+";
-};
-
-substraction.onclick = () => {
-  operator = "-";
-};
-
-multiplication.onclick = () => {
-  operator = "*";
-};
-
-division.onclick = () => {
-  operator = "/";
-};
-
-// THEME SWITCH
+//////////////////////////////////////// THEME SWITCH ////////////////////////////////////////
 let theme = localStorage.getItem("theme");
 let theme1 = document.getElementById("theme1");
 let theme2 = document.getElementById("theme2");
@@ -509,5 +234,423 @@ function setTheme(theme) {
         "hsl(198, 20%, 13%)"
       );
       break;
+  }
+}
+
+//////////////////////////////////////// GENERAL FUNCTIONS ////////////////////////////////////////
+function clearScreen() {
+  let digitsOnScreen = document.getElementById("result");
+  digitsOnScreen.textContent = "";
+}
+
+function printResult() {
+  digitsOnScreen.textContent = truncateToFitScreen(result);
+  isResultPrinted = true;
+}
+
+//////////////////////////////////////// FUNCTION BUTTONS ////////////////////////////////////////
+delButton.onclick = () => {
+  clearScreen();
+};
+
+resetButton.onclick = () => {
+  a = "";
+  b = "";
+  operator = "";
+  clearScreen();
+};
+
+resultButton.onclick = () => {
+  compute();
+  printResult();
+  a = result;
+  b = "";
+  operator = "";
+  result = "";
+};
+
+//////////////////////////////////////// INPUT WITH BUTTONS ////////////////////////////////////////
+let button0 = document.getElementById("btn0");
+let button1 = document.getElementById("btn1");
+let button2 = document.getElementById("btn2");
+let button3 = document.getElementById("btn3");
+let button4 = document.getElementById("btn4");
+let button5 = document.getElementById("btn5");
+let button6 = document.getElementById("btn6");
+let button7 = document.getElementById("btn7");
+let button8 = document.getElementById("btn8");
+let button9 = document.getElementById("btn9");
+let buttonDecimal = document.getElementById("btn-comma");
+
+function clickOnDigitKey(key) {
+  digitsOnScreen.textContent += `${key}`;
+}
+
+button0.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
+  clickOnDigitKey(0);
+};
+button1.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
+  clickOnDigitKey(1);
+};
+button2.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
+  clickOnDigitKey(2);
+};
+button3.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
+  clickOnDigitKey(3);
+};
+button4.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
+  clickOnDigitKey(4);
+};
+button5.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
+  clickOnDigitKey(5);
+};
+button6.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
+  clickOnDigitKey(6);
+};
+button7.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
+  clickOnDigitKey(7);
+};
+button8.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
+  clickOnDigitKey(8);
+};
+button9.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
+  clickOnDigitKey(9);
+};
+buttonDecimal.onclick = () => {
+  if (isResultPrinted) {
+    clearScreen();
+    isResultPrinted = false;
+  }
+  if (!isDecimal(digitsOnScreen.textContent)) {
+    if (digitsOnScreen.textContent == "") {
+      clickOnDigitKey("0.");
+    } else {
+      clickOnDigitKey(".");
+    }
+  }
+};
+
+operationButtons.forEach((item) => {
+  item.addEventListener("click", () => {
+    if (digitsOnScreen.textContent !== "") {
+      a = parseFloat(digitsOnScreen.textContent);
+    }
+    clearScreen();
+  });
+});
+
+addition.onclick = () => {
+  operator = "+";
+};
+substraction.onclick = () => {
+  operator = "-";
+};
+multiplication.onclick = () => {
+  operator = "*";
+};
+division.onclick = () => {
+  operator = "/";
+};
+
+//////////////////////////////////////// INPUT WITH KEYBOARD ////////////////////////////////////////
+document.addEventListener("keydown", keyIsPushed);
+
+function keyIsPushed(e) {
+  e.preventDefault();
+  switch (e.key) {
+    case "0":
+      if (isResultPrinted) {
+        clearScreen();
+        isResultPrinted = false;
+      }
+      clickOnDigitKey(0);
+      break;
+    case "1":
+      if (isResultPrinted) {
+        clearScreen();
+        isResultPrinted = false;
+      }
+      clickOnDigitKey(1);
+      break;
+    case "2":
+      if (isResultPrinted) {
+        clearScreen();
+        isResultPrinted = false;
+      }
+      clickOnDigitKey(2);
+      break;
+    case "3":
+      if (isResultPrinted) {
+        clearScreen();
+        isResultPrinted = false;
+      }
+      clickOnDigitKey(3);
+      break;
+    case "4":
+      if (isResultPrinted) {
+        clearScreen();
+        isResultPrinted = false;
+      }
+      clickOnDigitKey(4);
+      break;
+    case "5":
+      if (isResultPrinted) {
+        clearScreen();
+        isResultPrinted = false;
+      }
+      clickOnDigitKey(5);
+      break;
+    case "6":
+      if (isResultPrinted) {
+        clearScreen();
+        isResultPrinted = false;
+      }
+      clickOnDigitKey(6);
+      break;
+    case "7":
+      if (isResultPrinted) {
+        clearScreen();
+        isResultPrinted = false;
+      }
+      clickOnDigitKey(7);
+      break;
+    case "8":
+      if (isResultPrinted) {
+        clearScreen();
+        isResultPrinted = false;
+      }
+      clickOnDigitKey(8);
+      break;
+    case "9":
+      if (isResultPrinted) {
+        clearScreen();
+        isResultPrinted = false;
+      }
+      clickOnDigitKey(9);
+      break;
+    case ",":
+      if (isResultPrinted) {
+        clearScreen();
+        isResultPrinted = false;
+      }
+      if (!isDecimal(digitsOnScreen.textContent)) {
+        if (digitsOnScreen.textContent == "") {
+          clickOnDigitKey("0.");
+        } else {
+          clickOnDigitKey(".");
+        }
+      }
+      break;
+    case "+":
+      if (digitsOnScreen.textContent !== "") {
+        a = parseFloat(digitsOnScreen.textContent);
+      }
+      clearScreen();
+      operator = "+";
+      break;
+    case "-":
+      if (digitsOnScreen.textContent !== "") {
+        a = parseFloat(digitsOnScreen.textContent);
+      }
+      clearScreen();
+      operator = "-";
+      break;
+    case "*":
+      if (digitsOnScreen.textContent !== "") {
+        a = parseFloat(digitsOnScreen.textContent);
+      }
+      clearScreen();
+      operator = "*";
+      break;
+    case "/":
+      if (digitsOnScreen.textContent !== "") {
+        a = parseFloat(digitsOnScreen.textContent);
+      }
+      clearScreen();
+      operator = "/";
+      break;
+    case "=":
+      compute();
+      printResult();
+      a = result;
+      b = "";
+      operator = "";
+      result = "";
+      break;
+    case "Enter":
+      compute();
+      printResult();
+      a = result;
+      b = "";
+      operator = "";
+      result = "";
+      break;
+    case "Escape":
+      clearScreen();
+      break;
+    case "Backspace":
+      if (digitsOnScreen.textContent !== "") {
+        digitsOnScreen.textContent = digitsOnScreen.textContent.slice(0, -1);
+      }
+      break;
+    default:
+      console.log(e.key);
+      return;
+  }
+}
+
+//////////////////////////////////////// DECIMAL NUMBERS FUNCTIONS ////////////////////////////////////////
+function isDecimal(number) {
+  const stringNumber = number.toString();
+  return stringNumber.includes(".");
+}
+
+function turnIntoDecimalFraction(number) {
+  let stringNumber = number.toString();
+  if (isDecimal(number)) {
+    let split = stringNumber.split(".");
+    let numerator = parseInt(split[0] + split[1]);
+    let denominator = split[1].length;
+    return [numerator, denominator];
+  } else {
+    let numerator = number;
+    let denominator = 0;
+    return [numerator, denominator];
+  }
+}
+
+function haveSameDenominator(number1, number2) {
+  const [num1, den1] = turnIntoDecimalFraction(number1);
+  const [num2, den2] = turnIntoDecimalFraction(number2);
+  return den1 === den2;
+}
+
+function turnToSameDenominator(number1, number2) {
+  let [num1, den1] = turnIntoDecimalFraction(number1);
+  let [num2, den2] = turnIntoDecimalFraction(number2);
+  if (den1 < den2) {
+    num1 *= Math.pow(10, den2 - den1);
+    return [num1, den1, num2, den2];
+  } else {
+    num2 *= Math.pow(10, den1 - den2);
+    return [num1, den1, num2, den2];
+  }
+}
+
+function truncateToFitScreen(number) {
+  let [numerator, denominator] = turnIntoDecimalFraction(number);
+  const numeratorString = numerator.toString();
+  if (numeratorString.length > 14) {
+    let array = numeratorString.split("");
+    if (array[14] >= 5) {
+      array[13] = parseInt(array[13]) + 1;
+    }
+    numerator = parseInt(array.slice(0, 14).join(""));
+    return numerator / Math.pow(10, 14);
+  } else {
+    return numerator / Math.pow(10, denominator);
+  }
+}
+
+//////////////////////////////////////// CALCULATION FUNCTIONS ////////////////////////////////////////
+let a = "";
+let b = "";
+let operator = "";
+let result = "";
+let isResultPrinted = false;
+
+function compute() {
+  if (digitsOnScreen.textContent === "") {
+    digitsOnScreen.textContent = "ERROR";
+  } else {
+    b = parseFloat(digitsOnScreen.textContent);
+    switch (operator) {
+      case "+":
+        if (isDecimal(a) || isDecimal(b)) {
+          if (haveSameDenominator(a, b)) {
+            let [num1, den1] = turnIntoDecimalFraction(a);
+            let [num2, den2] = turnIntoDecimalFraction(b);
+            result = (num1 + num2) / Math.pow(10, den1);
+          } else {
+            let [num1, den1, num2, den2] = turnToSameDenominator(a, b);
+            result = (num1 + num2) / Math.pow(10, den1);
+          }
+        } else {
+          result = a + b;
+        }
+        break;
+      case "-":
+        if (isDecimal(a) || isDecimal(b)) {
+          if (haveSameDenominator(a, b)) {
+            let [num1, den1] = turnIntoDecimalFraction(a);
+            let [num2, den2] = turnIntoDecimalFraction(b);
+            result = (num1 - num2) / Math.pow(10, den1);
+          } else {
+            let [num1, den1, num2, den2] = turnToSameDenominator(a, b);
+            result = (num1 - num2) / Math.pow(10, den1);
+          }
+        } else {
+          result = a - b;
+        }
+        break;
+      case "*":
+        if (isDecimal(a) || isDecimal(b)) {
+          let [num1, den1] = turnIntoDecimalFraction(a);
+          let [num2, den2] = turnIntoDecimalFraction(b);
+          result = (num1 * num2) / Math.pow(10, den1 + den2);
+        } else {
+          result = a * b;
+        }
+        break;
+      case "/":
+        if (isDecimal(a) || isDecimal(b)) {
+          let [num1, den1] = turnIntoDecimalFraction(a);
+          let [num2, den2] = turnIntoDecimalFraction(b);
+          result = (num1 / num2) * Math.pow(10, den2 - den1);
+        } else {
+          result = a / b;
+        }
+        break;
+    }
   }
 }
