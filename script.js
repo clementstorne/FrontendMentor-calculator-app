@@ -187,7 +187,7 @@ function truncateToFitScreen(number) {
       array[13] = parseInt(array[13]) + 1;
     }
     numerator = parseInt(array.slice(0, 14).join(""));
-    return numerator / Math.pow(10, denominator);
+    return numerator / Math.pow(10, 14);
   } else {
     return numerator / Math.pow(10, denominator);
   }
